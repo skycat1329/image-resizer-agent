@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Resizer Agent - 600x600 Batch Converter</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="glass-bg"></div>
+  
+  <div class="app-container">
+    <header class="app-header">
+      <div class="logo-area">
+        <div class="logo-icon"></div>
+        <h1>Image Resizer <span>Agent</span></h1>
+      </div>
+      <p class="tagline">Select any local folder to instantly and automatically convert all images to exactly 600px &times; 600px.</p>
+    </header>
+
+    <main class="app-main">
+      <!-- Configuration Panel -->
+      <section class="control-panel glass-card">
+        <h2><span class="step-num">1</span> Resize Settings</h2>
+        
+        <div class="form-group">
+          <label for="resize-mode">Fitting Mode</label>
+          <select id="resize-mode">
+            <option value="cover" selected>Crop to Fill (Cover - Recommended)</option>
+            <option value="contain">Fit with Padding (Contain)</option>
+            <option value="stretch">Stretch to Fit</option>
+          </select>
+          <span class="help-text">Choose how images with non-square aspect ratios are resized.</span>
+        </div>
+
+        <div class="form-group" id="pad-color-group" style="display: none;">
+          <label for="pad-color">Padding Color</label>
+          <div class="color-picker-wrapper">
+            <input type="color" id="pad-color" value="#ffffff">
+            <input type="text" id="pad-color-text" value="#ffffff" placeholder="#ffffff">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="output-format">Output Format</label>
+          <select id="output-format">
+            <option value="original" selected>Keep Original Format</option>
+            <option value="png">PNG</option>
+            <option value="jpeg">JPEG</option>
+            <option value="webp">WebP</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="quality-group" style="display: none;">
+          <label for="image-quality">Compression Quality: <span id="quality-val">90%</span></label>
+          <input type="range" id="image-quality" min="10" max="100" value="90">
+        </div>
+      </section>
+
+      <!-- Operation Panel -->
+      <section class="operation-panel glass-card">
+        <h2><span class="step-num">2</span> Source Folder</h2>
+        
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone-content">
+            <div class="upload-icon"></div>
+            <h3>Select a Folder to Start</h3>
+            <p>Runs fully locally on your computer. Files never upload to any server.</p>
+            <button id="select-folder-btn" class="btn primary-btn">Select Input Folder</button>
+          </div>
+        </div>
+
+        <div class="status-dashboard" id="status-dashboard" style="display: none;">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-label">Total Found</span>
+              <span class="stat-value" id="stat-total">0</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Processed</span>
+              <span class="stat-value" id="stat-processed">0</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Successful</span>
+              <span class="stat-value text-success" id="stat-success">0</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Errors</span>
+              <span class="stat-value text-danger" id="stat-errors">0</span>
+            </div>
+          </div>
+
+          <div class="progress-container">
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+            </div>
+            <div class="progress-text">
+              <span id="progress-percentage">0% Complete</span>
+              <span id="progress-detail">Ready to process...</span>
+            </div>
+          </div>
+
+          <div class="action-bar">
+            <button id="start-btn" class="btn success-btn" disabled>Start Resizing</button>
+            <button id="cancel-btn" class="btn danger-btn" disabled>Stop</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- File Queue Section -->
+    <section class="queue-section glass-card" id="queue-section" style="display: none;">
+      <div class="queue-header">
+        <h2>Files Queue</h2>
+        <span class="badge" id="queue-count">0 files</span>
+      </div>
+      <div class="table-container">
+        <table class="queue-table">
+          <thead>
+            <tr>
+              <th>Filename</th>
+              <th>Original Size</th>
+              <th>Dimensions</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="queue-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <footer class="app-footer">
+    <p>Image Resizer Agent &bull; Powered by modern Web APIs</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
