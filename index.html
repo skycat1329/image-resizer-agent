@@ -18,7 +18,13 @@
         <div class="logo-icon"></div>
         <h1>Image Resizer <span>Agent</span></h1>
       </div>
-      <p class="tagline">Select any local folder to instantly and automatically convert all images to exactly 600px &times; 600px.</p>
+      <p class="tagline">Convert your images to exactly 600px &times; 600px automatically from a local folder or any website URL.</p>
+      
+      <!-- Mode Toggle Switch -->
+      <div class="mode-toggle-container">
+        <button id="mode-folder-btn" class="mode-btn active">Local Folder Mode</button>
+        <button id="mode-url-btn" class="mode-btn">URL Scraper Mode</button>
+      </div>
     </header>
 
     <main class="app-main">
@@ -62,18 +68,31 @@
 
       <!-- Operation Panel -->
       <section class="operation-panel glass-card">
-        <h2><span class="step-num">2</span> Source Folder</h2>
+        <h2><span class="step-num">2</span> Source & Progress</h2>
         
-        <div class="dropzone" id="dropzone">
-          <div class="dropzone-content">
-            <div class="upload-icon"></div>
-            <h3>Select a Folder to Start</h3>
-            <p>Runs fully locally on your computer. Files never upload to any server.</p>
-            <button id="select-folder-btn" class="btn primary-btn">Select Input Folder</button>
+        <!-- Folder Input Mode -->
+        <div class="mode-section" id="section-folder">
+          <div class="dropzone" id="dropzone">
+            <div class="dropzone-content">
+              <div class="upload-icon"></div>
+              <h3>Select a Folder to Start</h3>
+              <p>Requires File System Access API. Runs fully locally.</p>
+              <button id="select-folder-btn" class="btn primary-btn">Select Input Folder</button>
+            </div>
           </div>
         </div>
 
-        <div class="status-dashboard" id="status-dashboard" style="display: none;">
+        <!-- URL Input Mode -->
+        <div class="mode-section" id="section-url" style="display: none;">
+          <div class="url-input-container">
+            <input type="text" id="target-url" placeholder="https://example.com/gallery" class="url-field">
+            <button id="scrape-btn" class="btn primary-btn">Scan Website</button>
+          </div>
+          <span class="help-text">Scrapes the website for images and proxies them locally to bypass CORS constraints.</span>
+        </div>
+
+        <!-- Dashboard / Status Dashboard -->
+        <div class="status-dashboard" id="status-dashboard" style="display: none; margin-top: 1.5rem;">
           <div class="stats-grid">
             <div class="stat-card">
               <span class="stat-label">Total Found</span>
@@ -104,12 +123,30 @@
           </div>
 
           <div class="action-bar">
+            <!-- For URL mode, we need a local save directory or zip download fallback. We will support saving via folder picker. -->
+            <button id="set-dest-folder-btn" class="btn secondary-btn" style="display: none;">Set Output Folder</button>
             <button id="start-btn" class="btn success-btn" disabled>Start Resizing</button>
             <button id="cancel-btn" class="btn danger-btn" disabled>Stop</button>
           </div>
         </div>
       </section>
     </main>
+
+    <!-- Scraped Images Grid Gallery -->
+    <section class="gallery-section glass-card" id="gallery-section" style="display: none;">
+      <div class="gallery-header">
+        <h2>Discovered Images</h2>
+        <div class="gallery-controls">
+          <button id="select-all-btn" class="btn text-btn">Select All</button>
+          <button id="deselect-all-btn" class="btn text-btn">Deselect All</button>
+          <span class="badge" id="gallery-count">0 selected</span>
+        </div>
+      </div>
+      
+      <div class="image-grid" id="image-grid">
+        <!-- Dynamically populated -->
+      </div>
+    </section>
 
     <!-- File Queue Section -->
     <section class="queue-section glass-card" id="queue-section" style="display: none;">
